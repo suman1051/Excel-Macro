@@ -77,3 +77,34 @@ Sheets.Add(, ActiveSheet).Name = SheetName
 
 Next
 End Sub
+
+Sub Sample()
+    Dim ws As Worksheet
+    Dim aCell As Range, Rng As Range
+    Dim col As Long, lRow As Long
+    Dim colName As String
+
+    '~~> Change this to the relevant sheet
+    Set ws = ThisWorkbook.Sheets("DEBT - GILT ST")
+
+    With ws
+        Set aCell = .Range("A8:DD8").Find(What:="3 Month Return", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+
+        '~~> If Found
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            colName = Split(.Cells(, col).Address, "$")(1)
+
+            lRow = .Range(colName & .Rows.Count).End(xlUp).Row
+
+            '~~> This is your range
+            Set Rng = .Range(colName & "8:" & colName & lRow)
+
+            Debug.Print Rng.Address
+        '~~> If not found
+        Else
+            MsgBox "Nov Not Found"
+        End If
+    End With
+End Sub
