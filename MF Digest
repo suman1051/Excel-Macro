@@ -10,6 +10,7 @@ Dim mergedCells As Range
 Dim mCell As Range
 Dim cellText As String
 
+
 For Each ws In ThisWorkbook.Sheets
 If ws.Name Like "*_output" Then ws.Delete
 Next ws
@@ -74,37 +75,503 @@ Sheets.Add(, ActiveSheet).Name = SheetName
     Rows("9:9").Select
     Selection.Delete Shift:=xlUp
     
+'   copy paste
 
-Next
-End Sub
-
-Sub Sample()
-    Dim ws As Worksheet
+    Dim wsA As Worksheet
     Dim aCell As Range, Rng As Range
     Dim col As Long, lRow As Long
     Dim colName As String
 
-    '~~> Change this to the relevant sheet
-    Set ws = ThisWorkbook.Sheets("DEBT - GILT ST")
-
-    With ws
-        Set aCell = .Range("A8:DD8").Find(What:="3 Month Return", LookIn:=xlValues, LookAt:=xlWhole, _
+    
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Group/Investment*", LookIn:=xlValues, LookAt:=xlWhole, _
                     MatchCase:=False, SearchFormat:=False)
-
-        '~~> If Found
         If Not aCell Is Nothing Then
             col = aCell.Column
-            colName = Split(.Cells(, col).Address, "$")(1)
-
-            lRow = .Range(colName & .Rows.Count).End(xlUp).Row
-
-            '~~> This is your range
-            Set Rng = .Range(colName & "8:" & colName & lRow)
-
-            Debug.Print Rng.Address
-        '~~> If not found
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("A1").Select
+'            ActiveSheet.Paste
+            Selection.PasteSpecial Paste:=xlPasteFormats, Operation:= _
+                xlNone, SkipBlanks:=False, Transpose:=False
+            Selection.PasteSpecial Paste:=xlPasteValuesAndNumberFormats, Operation:= _
+                xlNone, SkipBlanks:=False, Transpose:=False
         Else
-            MsgBox "Nov Not Found"
         End If
     End With
+'   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*NAV (Growth)*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("B1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+'   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*1 Month Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("C1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+'   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*3 Month Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("D1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+    
+'   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*6 Month Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("E1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+    
+'   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*9 Month Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("F1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*1 Year Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("G1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*2 Year Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("H1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*3 Year Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("I1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+     
+'   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*5 Year Return*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("J1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*1 Month * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("K1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*3 Month * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("L1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*6 Month * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("M1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*9 Month * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("N1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*9 Month * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("N1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*1 Year * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("O1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*2 Year * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("P1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*3 Year * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("Q1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*5 Year * rank*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("R1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Credit Qual AAA*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("S1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Credit Qual AA %*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("T1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Credit Qual A %*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("U1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Yield to Maturity*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("V1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Inception Date*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("W1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Exit Fee*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("X1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+          
+     
+     
+ '   repeat
+    sh.Select
+    Set wsA = ActiveSheet
+    With wsA
+        Set aCell = .Range("A8:DD8").Find(What:="*Fund Size*", LookIn:=xlValues, LookAt:=xlWhole, _
+                    MatchCase:=False, SearchFormat:=False)
+        If Not aCell Is Nothing Then
+            col = aCell.Column
+            Columns(col).Select
+            Application.CutCopyMode = False
+            Selection.Copy
+            Sheets(SheetName).Select
+            Range("Y1").Select
+            ActiveSheet.Paste
+        Else
+        End If
+    End With
+    
+    Rows("7:7").Select
+    Selection.Delete Shift:=xlUp
+       
+          
+Next
 End Sub
