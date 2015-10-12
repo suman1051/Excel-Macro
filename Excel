@@ -1,0 +1,79 @@
+Sub Amol_Wakekar()
+
+'delete output sheets if already exists
+Application.DisplayAlerts = False
+Dim ws As Worksheet
+'Dim myWS As Worksheet
+Dim myCells As Range
+Dim anyCell As Range
+Dim mergedCells As Range
+Dim mCell As Range
+Dim cellText As String
+
+For Each ws In ThisWorkbook.Sheets
+If ws.Name Like "*_output" Then ws.Delete
+Next ws
+Application.DisplayAlerts = True
+
+
+
+'code to create new output sheets
+Dim sh As Worksheet
+For Each sh In ActiveWorkbook.Worksheets
+SheetName = sh.Name & "_output"
+Sheets.Add(, ActiveSheet).Name = SheetName
+
+  sh.Select
+  Set ws = ActiveSheet
+  Set myCells = ws.UsedRange
+  For Each anyCell In myCells
+    If anyCell.MergeCells Then
+      cellText = anyCell.Value
+      Set mergedCells = anyCell.MergeArea
+      anyCell.MergeCells = False
+      For Each mCell In mergedCells
+        mCell = cellText
+        mCell.HorizontalAlignment = xlLeft
+      Next
+      Set mergedCells = Nothing
+    End If
+  Next
+  Set myCells = Nothing
+  Set myWS = Nothing
+  
+  
+'
+
+'
+'    Range("A9").Select
+'    ActiveCell.FormulaR1C1 = "=CONCATENATE(A7,"" "",A10"
+    Range("A9").Select
+    Selection.NumberFormat = "General"
+    ActiveCell.FormulaR1C1 = "=CONCATENATE(R[-2]C,"" "",R[1]C)"
+    Range("A9:AG9").Select
+    Selection.FillRight
+    With Selection
+        .HorizontalAlignment = xlCenter
+        .VerticalAlignment = xlBottom
+        .WrapText = True
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+    Selection.Copy
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Application.CutCopyMode = False
+    
+
+    Rows("7:7").Select
+    Selection.Delete Shift:=xlUp
+    Rows("9:9").Select
+    Selection.Delete Shift:=xlUp
+    
+
+Next
+End Sub
