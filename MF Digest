@@ -1,4 +1,4 @@
-Sub Amol_Wakekar()
+Sub Create_O()
 
 'delete output sheets if already exists
 Application.DisplayAlerts = False
@@ -12,7 +12,7 @@ Dim cellText As String
 
 
 For Each ws In ThisWorkbook.Sheets
-If ws.Name Like "*_output" Then ws.Delete
+If ws.Name Like "*_O" Then ws.Delete
 Next ws
 Application.DisplayAlerts = True
 
@@ -21,7 +21,7 @@ Application.DisplayAlerts = True
 'code to create new output sheets
 Dim sh As Worksheet
 For Each sh In ActiveWorkbook.Worksheets
-SheetName = sh.Name & "_output"
+SheetName = sh.Name & "_O"
 Sheets.Add(, ActiveSheet).Name = SheetName
 
   sh.Select
@@ -575,3 +575,19 @@ Sheets.Add(, ActiveSheet).Name = SheetName
           
 Next
 End Sub
+
+Sub delete_working()
+'delete output sheets if already exists
+Application.DisplayAlerts = False
+Dim ws As Worksheet
+'Dim cellText As String
+
+For Each ws In ThisWorkbook.Sheets
+'If ws.Name Like "*_output" Then ws.delete
+
+If Right(ws.Name, 2) <> "_O" Then ws.delete
+
+Next ws
+Application.DisplayAlerts = True
+End Sub
+
