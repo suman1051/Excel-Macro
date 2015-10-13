@@ -1,2 +1,2 @@
 # Macro
-Excel macro storage
+Excel macro store
