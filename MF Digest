@@ -565,13 +565,44 @@ Sheets.Add(, ActiveSheet).Name = SheetName
             Sheets(SheetName).Select
             Range("Y1").Select
             ActiveSheet.Paste
+            
+            
+            Range("AA1").Select
+            ActiveCell.FormulaR1C1 = "10000000"
+            Selection.Copy
+            
+            LastRow = Range("Y7").SpecialCells(xlCellTypeLastCell).Row
+            Range("Y7:Y" & LastRow).Select
+            
+            Selection.PasteSpecial Paste:=xlPasteAll, Operation:=xlDivide, SkipBlanks _
+                :=False, Transpose:=False
+            Selection.Style = "Comma"
+            
+            Selection.Replace What:="0", Replacement:="", LookAt:=xlWhole, _
+                SearchOrder:=xlByRows, MatchCase:=False, SearchFormat:=False, _
+                ReplaceFormat:=False
+            
+            Range("AA1").Select
+            Application.CutCopyMode = False
+            Selection.ClearContents
+    
+'            With Selection.Interior
+'                .Pattern = xlSolid
+'                .PatternColorIndex = xlAutomatic
+'                .Color = 65535
+'                .TintAndShade = 0
+'                .PatternTintAndShade = 0
+'            End With
         Else
         End If
     End With
     
+        
     Rows("7:7").Select
     Selection.Delete Shift:=xlUp
-       
+    
+    Range("A1").Select
+    
           
 Next
 End Sub
@@ -585,9 +616,8 @@ Dim ws As Worksheet
 For Each ws In ThisWorkbook.Sheets
 'If ws.Name Like "*_output" Then ws.delete
 
-If Right(ws.Name, 2) <> "_O" Then ws.delete
+If Right(ws.Name, 2) <> "_O" Then ws.Delete
 
 Next ws
 Application.DisplayAlerts = True
 End Sub
-
