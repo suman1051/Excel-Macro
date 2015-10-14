@@ -1,0 +1,120 @@
+Sub MergeAllWorkbooks()
+    Dim MyPath As String, FilesInPath As String
+    Dim MyFiles() As String
+    Dim SourceRcount As Long, FNum As Long
+    Dim mybook As Workbook, BaseWks As Worksheet
+    Dim sourceRange As Range, destrange As Range
+    Dim rnum As Long, CalcMode As Long
+
+    ' Change this to the path\folder location of your files.
+    MyPath = "C:\Users\sumanr\Desktop\DATA"
+
+    ' Add a slash at the end of the path if needed.
+    If Right(MyPath, 1) <> "\" Then
+        MyPath = MyPath & "\"
+    End If
+
+    ' If there are no Excel files in the folder, exit.
+    FilesInPath = Dir(MyPath & "*.XLS")
+    If FilesInPath = "" Then
+        MsgBox "No files found"
+        Exit Sub
+    End If
+
+    ' Fill the myFiles array with the list of Excel files
+    ' in the search folder.
+    FNum = 0
+    Do While FilesInPath <> ""
+        FNum = FNum + 1
+        ReDim Preserve MyFiles(1 To FNum)
+        MyFiles(FNum) = FilesInPath
+        FilesInPath = Dir()
+    Loop
+
+    ' Set various application properties.
+    With Application
+        CalcMode = .Calculation
+        .Calculation = xlCalculationManual
+        .ScreenUpdating = False
+        .EnableEvents = False
+    End With
+
+    ' Add a new workbook with one sheet.
+    Set BaseWks = Workbooks.Add(xlWBATWorksheet).Worksheets(1)
+    rnum = 1
+
+    ' Loop through all files in the myFiles array.
+    If FNum > 0 Then
+        For FNum = LBound(MyFiles) To UBound(MyFiles)
+            Set mybook = Nothing
+            On Error Resume Next
+            Set mybook = Workbooks.Open(MyPath & MyFiles(FNum))
+            On Error GoTo 0
+
+            If Not mybook Is Nothing Then
+                On Error Resume Next
+
+                ' Change this range to fit your own needs.
+                ' to merger csv files, remove [Sheets("Qst").] from code
+                With mybook.Worksheets(1)
+                    Set sourceRange = Sheets("Qst").Range("A2:K15")
+                End With
+
+                If Err.Number > 0 Then
+                    Err.Clear
+                    Set sourceRange = Nothing
+                Else
+                    ' If source range uses all columns then
+                    ' skip this file.
+                    If sourceRange.Columns.Count >= BaseWks.Columns.Count Then
+                        Set sourceRange = Nothing
+                    End If
+                End If
+                On Error GoTo 0
+
+                If Not sourceRange Is Nothing Then
+
+                    SourceRcount = sourceRange.Rows.Count
+
+                    If rnum + SourceRcount >= BaseWks.Rows.Count Then
+                        MsgBox "There are not enough rows in the target worksheet."
+                        BaseWks.Columns.AutoFit
+                        mybook.Close savechanges:=False
+                        GoTo ExitTheSub
+                    Else
+
+                        ' Copy the file name in column A.
+                        With sourceRange
+                            BaseWks.Cells(rnum, "A"). _
+                                    Resize(.Rows.Count).Value = MyFiles(FNum)
+                        End With
+
+                        ' Set the destination range.
+                        Set destrange = BaseWks.Range("B" & rnum)
+
+                        ' Copy the values from the source range
+                        ' to the destination range.
+                        With sourceRange
+                            Set destrange = destrange. _
+                                            Resize(.Rows.Count, .Columns.Count)
+                        End With
+                        destrange.Value = sourceRange.Value
+
+                        rnum = rnum + SourceRcount
+                    End If
+                End If
+                mybook.Close savechanges:=False
+            End If
+
+        Next FNum
+        BaseWks.Columns.AutoFit
+    End If
+
+ExitTheSub:
+    ' Restore the application properties.
+    With Application
+        .ScreenUpdating = True
+        .EnableEvents = True
+        .Calculation = CalcMode
+    End With
+End Sub
