@@ -1,0 +1,2 @@
+# Cartesian product Excel
+=IF(ROW()-ROW($F$1)+1>COUNTA(A:A)*COUNTA(B:B),"",INDEX(A:A,INT((ROW()-ROW($F$1))/COUNTA(B:B)+1))&"|"&INDEX(B:B,MOD(ROW()-ROW($F$1),COUNTA(B:B))+1))
