@@ -1,0 +1,11 @@
+Sub CopyCommentText()
+Dim CmtText As String
+Dim CmtCount As Integer, i As Integer
+Dim CommCell As String 
+CmtCount = ActiveSheet.Comments.Count
+For i = 1 To CmtCount
+CommCell = ActiveSheet.Comments(i).Parent.Address
+Range(CommCell).Offset(0, 1) = ActiveSheet.Comments(i).Text
+Next i 
+
+End Sub
