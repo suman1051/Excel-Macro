@@ -1,0 +1,42 @@
+Sub Macro1()
+
+Application.ScreenUpdating = False
+
+Sheets("Sheet4").Select
+Range("a1").Select
+
+Sheets("Sheet5").Select
+Range("a2").Select
+
+For i = 1 To 8
+
+Sheets("Sheet4").Select
+
+If Len(ActiveCell.Value) > 1 Then
+    
+    xname = Right(ActiveCell.Value, Len(ActiveCell.Value) - 6)
+'    xname = ActiveCell.Value
+    xdesig = Right(ActiveCell.Offset(1, 0).Value, Len(ActiveCell.Offset(1, 0).Value) - 13)
+'    xdesig = ActiveCell.Offset(1, 0).Value
+    xsal = Right(ActiveCell.Offset(2, 0).Value, Len(ActiveCell.Offset(2, 0).Value) - 8)
+    
+    Sheets("Sheet5").Select
+    ActiveCell.Value = xname
+    ActiveCell.Offset(0, 1).Value = xdesig
+    ActiveCell.Offset(0, 2).Value = xsal
+    ActiveCell.Offset(1, 0).Select
+    
+    Sheets("Sheet4").Select
+    ActiveCell.Offset(3, 0).Select
+        
+        
+Else
+    i = 10
+
+End If
+i = i - 1
+Next
+
+Application.ScreenUpdating = True
+
+End Sub
