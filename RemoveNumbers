@@ -1,0 +1,10 @@
+Function RemoveNumbers(t As String)
+    Dim i As Long, newString As String
+    
+    For i = 1 To Len(t)
+        If Not IsNumeric(Mid(t, i, 1)) Then
+            newString = newString & Mid(t, i, 1)
+        End If
+    Next i
+    RemoveNumbers = newString
+End Function
