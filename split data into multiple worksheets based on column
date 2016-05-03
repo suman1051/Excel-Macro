@@ -1,7 +1,4 @@
 Sub parse_data()
-'vcol =1, the number 1 is the column number that you want to split the data based on.
-'Set ws = Sheets("Sheet1"), Sheet1 is the sheet name that you want to apply this code
-'title = "A1:C1", A1:C1 is the range of the title.
 Dim lr As Long
 Dim ws As Worksheet
 Dim vcol, i As Integer
@@ -9,10 +6,13 @@ Dim icol As Long
 Dim myarr As Variant
 Dim title As String
 Dim titlerow As Integer
+'vcol =1, the number 1 is the column number that you want to split the data based on.
 vcol = 1
-Set ws = Sheets("Upload")
+'Set ws = Sheets("Sheet1"), Sheet1 is the sheet name that you want to apply this code
+Set ws = Sheets("Sheet1")
 lr = ws.Cells(ws.Rows.Count, vcol).End(xlUp).Row
-title = "A1:O1"
+'title = "A1:C1", A1:C1 is the range of the title.
+title = "A1:C1"
 titlerow = ws.Range(title).Cells(1).Row
 icol = ws.Columns.Count
 ws.Cells(1, icol) = "Unique"
