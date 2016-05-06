@@ -1,33 +1,32 @@
 Sub BrandMargin()
 '
-' Macro1 Macro
 '
-'Dim myCells As Range
+
 
 Dim ws As Worksheet
+
+'Delete "Margin" / "For Tie-Up"  sheet if exists
+
 For Each ws In ThisWorkbook.Sheets
 If ws.Name Like "Margin" Or ws.Name Like "For Tie-Up" Then ws.Delete
 Application.DisplayAlerts = False
 Next ws
 
-
-
+'Copy entire content of  "SKU" to another sheet and name it "Margin"
     Sheets("SKU").Select
     Sheets("SKU").Copy After:=Sheets(1)
     Sheets("SKU (2)").Select
     Sheets("SKU (2)").Name = "Margin"
     On Error Resume Next
     
+'Delete all rows for which "Margin" is blank
     Columns("F").SpecialCells(xlCellTypeBlanks).EntireRow.Delete
     
-        
+'Sort by "Sub Category" [z-a] then by "Title"[a-z]
     Range("A1").Select
     Range(Selection, Selection.End(xlDown)).Select
     Range(Selection, Selection.End(xlToRight)).Select
 
-'    ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Add Key:= _
-'        ActiveCell.Offset(0, 3).Range("A1:A20995"), SortOn:=xlSortOnValues, Order:= _
-'        xlAscending, DataOption:=xlSortNormal
 
     ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Clear
     ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Add Key:= _
@@ -43,14 +42,15 @@ Next ws
         .SortMethod = xlPinYin
         .Apply
     End With
-        
+    
+'   Copy entire content of "Margin" Sheet and Prepare "For Tie-Up"
     Sheets("Margin").Select
     Sheets("Margin").Copy After:=Sheets(2)
     Sheets("Margin (2)").Select
     Sheets("Margin (2)").Name = "For Tie-Up"
     Range("A1").Select
     
-    
+'   Delete unnecessary columns from "For Tie-Up"
     Dim keepColumn As Boolean
     Dim currentColumn As Integer
     Dim columnHeading As String
@@ -81,6 +81,7 @@ Next ws
     Wend
     Range("E:E", "F:F").Delete
 
+'   Change alignment of all columns
     Range("A1").Select
     Range(Selection, Selection.End(xlDown)).Select
     Range(Selection, Selection.End(xlToRight)).Select
@@ -95,15 +96,17 @@ Next ws
         .ReadingOrder = xlContext
         .MergeCells = False
     End With
-'    ActiveCell.Offset(0, 1).Columns("A:A").EntireColumn.EntireColumn.AutoFit
-'    ActiveCell.Columns("A:D").EntireColumn.Select
+'
+'   AutoFit column width
     ActiveCell.Columns("A:D").EntireColumn.EntireColumn.AutoFit
+    
+'   Increase width of "MRP" column
     Columns("D").ColumnWidth = 20
     
+'   Page setup and formating
     Range("A1").Select
     Range(Selection, Selection.End(xlDown)).Select
     Range(Selection, Selection.End(xlToRight)).Select
-'    Application.PrintCommunication = True
     ActiveSheet.PageSetup.PrintArea = Selection
     
 
@@ -113,7 +116,7 @@ Next ws
         .PrintTitleColumns = ""
     End With
     Application.PrintCommunication = True
-    ActiveSheet.PageSetup.PrintArea = "$A$1:$D$24156"
+    
     Application.PrintCommunication = False
     With ActiveSheet.PageSetup
 '        .LeftHeader = ""
@@ -145,8 +148,17 @@ Next ws
 '        .DifferentFirstPageHeaderFooter = False
         .ScaleWithDocHeaderFooter = True
         .AlignMarginsHeaderFooter = True
-
+    ActiveSheet.PageSetup.PrintArea = ""
+    ActiveSheet.PageSetup.PrintArea = Selection
     End With
     Application.PrintCommunication = True
+    
+    Dim relativePath As String
+    relativePath = ThisWorkbook.Path & "\" & ActiveWorkbook.Name
+    ActiveWorkbook.SaveAs Filename:=relativePath
+    
+'   save excel as PDF
+    ActiveSheet.ExportAsFixedFormat _
+        Type:=xlTypePDF
     
 End Sub
