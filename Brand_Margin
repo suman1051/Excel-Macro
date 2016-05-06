@@ -1,0 +1,153 @@
+Sub BrandMargin()
+'
+' Macro1 Macro
+'
+'Dim myCells As Range
+
+Dim ws As Worksheet
+For Each ws In ThisWorkbook.Sheets
+If ws.Name Like "Margin" Or ws.Name Like "For Tie-Up" Then ws.Delete
+Application.DisplayAlerts = False
+Next ws
+
+
+
+    Sheets("SKU").Select
+    Sheets("SKU").Copy After:=Sheets(1)
+    Sheets("SKU (2)").Select
+    Sheets("SKU (2)").Name = "Margin"
+    On Error Resume Next
+    
+    Columns("F").SpecialCells(xlCellTypeBlanks).EntireRow.Delete
+    
+        
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+
+'    ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Add Key:= _
+'        ActiveCell.Offset(0, 3).Range("A1:A20995"), SortOn:=xlSortOnValues, Order:= _
+'        xlAscending, DataOption:=xlSortNormal
+
+    ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Clear
+    ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Add Key:= _
+        ActiveCell.Offset(0, 1), SortOn:=xlSortOnValues, Order:= _
+        xlDescending, DataOption:=xlSortNormal
+    ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort.SortFields.Add Key:= _
+        ActiveCell.Offset(0, 3), SortOn:=xlSortOnValues, Order:= _
+        xlAscending, DataOption:=xlSortNormal
+    With ActiveWorkbook.Worksheets("Margin").AutoFilter.Sort
+        .Header = xlYes
+        .MatchCase = False
+        .Orientation = xlTopToBottom
+        .SortMethod = xlPinYin
+        .Apply
+    End With
+        
+    Sheets("Margin").Select
+    Sheets("Margin").Copy After:=Sheets(2)
+    Sheets("Margin (2)").Select
+    Sheets("Margin (2)").Name = "For Tie-Up"
+    Range("A1").Select
+    
+    
+    Dim keepColumn As Boolean
+    Dim currentColumn As Integer
+    Dim columnHeading As String
+
+    currentColumn = 1
+    While currentColumn <= ActiveSheet.UsedRange.Columns.Count
+        columnHeading = ActiveSheet.UsedRange.Cells(1, currentColumn).Value
+
+        'CHECK WHETHER TO KEEP THE COLUMN
+        keepColumn = False
+        If columnHeading = "Sub Category" Then keepColumn = True
+        If columnHeading = "BrandName" Then keepColumn = True
+        If columnHeading = "Title" Then keepColumn = True
+        If columnHeading = "MRP" Then keepColumn = True
+'        If columnHeading = "Product" Then keepColumn = True
+
+
+        If keepColumn Then
+        'IF YES THEN SKIP TO THE NEXT COLUMN,
+            currentColumn = currentColumn + 1
+        Else
+        'IF NO DELETE THE COLUMN
+            ActiveSheet.Columns(currentColumn).Delete
+        End If
+
+        'LASTLY AN ESCAPE IN CASE THE SHEET HAS NO COLUMNS LEFT
+        If (ActiveSheet.UsedRange.Address = "$A$1") And (ActiveSheet.Range("$A$1").Text = "") Then Exit Sub
+    Wend
+    Range("E:E", "F:F").Delete
+
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    With Selection
+        .HorizontalAlignment = xlLeft
+        .VerticalAlignment = xlBottom
+        .WrapText = False
+        .Orientation = 0
+        .AddIndent = False
+        .IndentLevel = 0
+        .ShrinkToFit = False
+        .ReadingOrder = xlContext
+        .MergeCells = False
+    End With
+'    ActiveCell.Offset(0, 1).Columns("A:A").EntireColumn.EntireColumn.AutoFit
+'    ActiveCell.Columns("A:D").EntireColumn.Select
+    ActiveCell.Columns("A:D").EntireColumn.EntireColumn.AutoFit
+    Columns("D").ColumnWidth = 20
+    
+    Range("A1").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    Range(Selection, Selection.End(xlToRight)).Select
+'    Application.PrintCommunication = True
+    ActiveSheet.PageSetup.PrintArea = Selection
+    
+
+    Application.PrintCommunication = False
+    With ActiveSheet.PageSetup
+        .PrintTitleRows = "$1:$1"
+        .PrintTitleColumns = ""
+    End With
+    Application.PrintCommunication = True
+    ActiveSheet.PageSetup.PrintArea = "$A$1:$D$24156"
+    Application.PrintCommunication = False
+    With ActiveSheet.PageSetup
+'        .LeftHeader = ""
+'        .CenterHeader = ""
+'        .RightHeader = ""
+'        .LeftFooter = ""
+        .CenterFooter = "Page &P of &N"
+'        .RightFooter = ""
+        .LeftMargin = Application.InchesToPoints(0.118110236220472)
+        .RightMargin = Application.InchesToPoints(0.15748031496063)
+        .TopMargin = Application.InchesToPoints(0.216535433070866)
+        .BottomMargin = Application.InchesToPoints(0.216535433070866)
+        .HeaderMargin = Application.InchesToPoints(0.078740157480315)
+        .FooterMargin = Application.InchesToPoints(0.078740157480315)
+        .PrintHeadings = False
+        .PrintGridlines = False
+        .PrintComments = xlPrintNoComments
+        .CenterHorizontally = False
+        .CenterVertically = False
+        .Orientation = xlLandscape
+        .Draft = False
+        .PaperSize = xlPaperA4
+        .FirstPageNumber = xlAutomatic
+        .Order = xlDownThenOver
+        .BlackAndWhite = False
+        .Zoom = 85
+        .PrintErrors = xlPrintErrorsDisplayed
+'        .OddAndEvenPagesHeaderFooter = False
+'        .DifferentFirstPageHeaderFooter = False
+        .ScaleWithDocHeaderFooter = True
+        .AlignMarginsHeaderFooter = True
+
+    End With
+    Application.PrintCommunication = True
+    
+End Sub
+
