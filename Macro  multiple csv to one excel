@@ -7,7 +7,7 @@ Sub MergeAllWorkbooks()
     Dim rnum As Long, CalcMode As Long
 
     ' Change this to the path\folder location of your files.
-    MyPath = "C:\Users\sumanr\Desktop\DATA"
+    MyPath = "C:\Users\sumanr\Desktop\CP_rename"
 
     ' Add a slash at the end of the path if needed.
     If Right(MyPath, 1) <> "\" Then
@@ -15,7 +15,7 @@ Sub MergeAllWorkbooks()
     End If
 
     ' If there are no Excel files in the folder, exit.
-    FilesInPath = Dir(MyPath & "*.XLS")
+    FilesInPath = Dir(MyPath & "*.xlsx")
     If FilesInPath = "" Then
         MsgBox "No files found"
         Exit Sub
@@ -57,7 +57,10 @@ Sub MergeAllWorkbooks()
                 ' Change this range to fit your own needs.
                 ' to merger csv files, remove [Sheets("Qst").] from code
                 With mybook.Worksheets(1)
-                    Set sourceRange = Sheets("Qst").Range("A2:K15")
+                    'Set sourceRange = Sheets("Qst").Range("A2:K15")
+                    'Sheets.Count to specify sheet, rest for variable range
+                    Set sourceRange = Sheets(Sheets.Count).Range("C3:C" & Range("C" & Rows.Count).End(xlUp).Row)
+                    
                 End With
 
                 If Err.Number > 0 Then
@@ -118,3 +121,5 @@ ExitTheSub:
         .Calculation = CalcMode
     End With
 End Sub
+
+
